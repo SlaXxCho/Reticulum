@@ -18,3 +18,8 @@ false_positive_guard_forced_pqc_failure | lora_failure | MAX_SECURITY | hybrid_l
 - PQC: SIMULATED / NOT CONCLUSIVE
 - LoRa: fallback Python si tc no está disponible
 - Hardware LoRa real pendiente
+## Documentation Clarification
+
+- This report demonstrates **functional behavior in a local harness**.
+- PQC-related outcomes in this run are **SIMULATED / NOT CONCLUSIVE** unless backed by real PQC cryptographic implementations and independent verification.
+- Network impairment in this environment used fallback simulation when `tc/netem` was unavailable.
