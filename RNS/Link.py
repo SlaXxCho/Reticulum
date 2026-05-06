@@ -31,6 +31,9 @@
 from RNS.Cryptography import X25519PrivateKey, X25519PublicKey, Ed25519PrivateKey, Ed25519PublicKey
 from RNS.Cryptography import Token
 from RNS.Channel import Channel, LinkChannelOutlet
+from RNS.crypto_profiles import CryptoProfileManager, SecurityTag, Medium
+from RNS.security_policy import SecurityPolicyEngine
+from RNS.pqc_upgrade import PQCUpgradeManager
 
 from time import sleep
 from .vendor import umsgpack as umsgpack
@@ -112,6 +115,11 @@ class Link:
     ACTIVE              = 0x02
     STALE               = 0x03
     CLOSED              = 0x04
+    SEC_INIT            = 0x10
+    SEC_ESTABLISHED     = 0x11
+    SEC_PQC_NEGOTIATION = 0x12
+    SEC_KEY_SWITCH      = 0x13
+    SEC_SECURE          = 0x14
 
     TIMEOUT             = 0x01
     INITIATOR_CLOSED    = 0x02
@@ -272,6 +280,14 @@ class Link:
         self.__remote_identity = None
         self.__track_phy_stats = False
         self._channel = None
+        self.profile_manager = CryptoProfileManager(minimum_profile="classic", preferred_profile="classic")
+        self.policy_engine = SecurityPolicyEngine(self.profile_manager)
+        self.pqc_manager = PQCUpgradeManager(self)
+        self.security_state = Link.SEC_INIT
+        self.current_profile = "classic"
+        self.remote_capabilities = {}
+        self.key_epoch = 0
+        self.pending_derived_key = None
 
         if self.destination == None:
             self.initiator = False
@@ -427,6 +443,7 @@ class Link:
                         self.mtu = confirmed_mtu or RNS.Reticulum.MTU
                         self.update_mdu()
                         self.status = Link.ACTIVE
+                        self.security_state = Link.SEC_ESTABLISHED
                         self.activated_at = time.time()
                         self.last_proof = self.activated_at
                         RNS.Transport.activate_link(self)
@@ -539,6 +556,7 @@ class Link:
                 rtt = umsgpack.unpackb(plaintext)
                 self.rtt = max(measured_rtt, rtt)
                 self.status = Link.ACTIVE
+                self.security_state = Link.SEC_ESTABLISHED
                 self.activated_at = time.time()
 
                 if self.rtt != None and self.establishment_cost != None and self.rtt > 0 and self.establishment_cost > 0:
@@ -1170,7 +1188,16 @@ class Link:
                             plaintext = self.decrypt(packet.data)
                             if plaintext != None:
                                 self.__update_phy_stats(packet)
-                                self._channel._receive(plaintext)
+                                control = None
+                                try:
+                                    control = self.pqc_manager.parse_control(plaintext)
+                                except Exception as e:
+                                    RNS.log(f"Dropped invalid security control message on {self}: {e}", RNS.LOG_WARNING)
+
+                                if control:
+                                    self._handle_security_control(control)
+                                else:
+                                    self._channel._receive(plaintext)
 
                 elif packet.packet_type == RNS.Packet.PROOF:
                     if packet.context == RNS.Packet.RESOURCE_PRF:
@@ -1239,6 +1266,85 @@ class Link:
         :param callback: A function or method with the signature *callback(message, packet)* to be called.
         """
         self.callbacks.packet = callback
+
+    def set_security_profile(self, minimum_profile="classic", preferred_profile=None):
+        preferred = preferred_profile if preferred_profile else minimum_profile
+        self.profile_manager = CryptoProfileManager(minimum_profile=minimum_profile, preferred_profile=preferred)
+        self.policy_engine = SecurityPolicyEngine(self.profile_manager)
+
+    def _medium(self):
+        iface = str(self.attached_interface).lower() if self.attached_interface else ""
+        if "rnode" in iface or "lora" in iface:
+            return Medium.LORA
+        if "tcp" in iface or "wifi" in iface:
+            return Medium.WIFI
+        return Medium.UNKNOWN
+
+    def _handle_security_control(self, control):
+        ctype = control.get("t")
+        if ctype == "CAPS":
+            self.remote_capabilities = control.get("caps", {})
+            self.security_state = Link.SEC_PQC_NEGOTIATION
+        elif ctype == "SECURITY_POLICY_UPDATE":
+            requested = control.get("requested_profile", "classic")
+            if self.profile_manager.can_downgrade_to(requested):
+                if self.profile_manager.rank(requested) >= self.profile_manager.rank(self.current_profile):
+                    self.current_profile = requested
+            else:
+                RNS.log(f"Rejected policy update below node minimum profile on {self}", RNS.LOG_WARNING)
+        elif ctype == "PQC_KEM":
+            pqc_secret = RNS.Identity.full_hash(control.get("ct", b""))[:32]
+            self.pending_derived_key = self.pqc_manager.derive_hybrid_material(self.derived_key, pqc_secret)
+            self.security_state = Link.SEC_KEY_SWITCH
+            self.activate_pending_key()
+
+    def send_security_policy_update(self, requested_profile, duration=120):
+        payload = self.pqc_manager.build_policy_update(requested_profile=requested_profile, duration=duration)
+        pkt = RNS.Packet(self, payload, RNS.Packet.DATA, context=RNS.Packet.CHANNEL)
+        pkt.send()
+        self.had_outbound()
+
+    def negotiate_security(self):
+        payload = self.pqc_manager.build_capability_message(self.profile_manager.get_capabilities())
+        pkt = RNS.Packet(self, payload, RNS.Packet.DATA, context=RNS.Packet.CHANNEL)
+        pkt.send()
+        self.had_outbound()
+        self.security_state = Link.SEC_PQC_NEGOTIATION
+
+    def perform_pqc_upgrade(self, target_profile="hybrid_light"):
+        payload = self.pqc_manager.build_kem_exchange(target_profile)
+        pkt = RNS.Packet(self, payload, RNS.Packet.DATA, context=RNS.Packet.CHANNEL)
+        pkt.send()
+        self.had_outbound()
+
+    def activate_pending_key(self):
+        if self.pending_derived_key is not None:
+            self.derived_key = self.pending_derived_key
+            self.pending_derived_key = None
+            self.token = Token(self.derived_key)
+            self.key_epoch += 1
+            self.current_profile = "hybrid_light" if self.current_profile == "classic" else self.current_profile
+            self.security_state = Link.SEC_SECURE
+
+    def send_secure(self, data, security_tag="STANDARD"):
+        if isinstance(data, str):
+            data = data.encode("utf-8")
+
+        decision = self.policy_engine.evaluate(
+            security_tag=security_tag if isinstance(security_tag, SecurityTag) else SecurityTag(security_tag),
+            remote_capabilities=self.remote_capabilities if self.remote_capabilities else self.profile_manager.get_capabilities(),
+            current_profile=self.current_profile,
+            medium=self._medium(),
+        )
+
+        if decision["block"] or not decision["allow_send"]:
+            raise PermissionError(f"Security policy blocked send: {decision['reason']}")
+
+        if decision.get("require_pqc_upgrade"):
+            self.perform_pqc_upgrade(target_profile=decision.get("required_profile", "hybrid_light"))
+
+        packet = RNS.Packet(self, data, RNS.Packet.DATA)
+        return packet.send()
 
     def set_resource_callback(self, callback):
         """

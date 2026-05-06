@@ -1,0 +1,12 @@
+[LINK] established in 0.009s
+{"ok": true, "decision": "allow", "profile": "classic", "key_version": 1}
+[LINK] established in 0.002s
+{"ok": true, "decision": "upgrade", "profile": "hybrid_light", "key_version": 2, "pqc": "completed"}
+[LINK] established in 0.003s
+{"ok": false, "decision": "block", "reason": "required profile not available"}
+[LINK] established in 0.001s
+{"ok": false, "decision": "reject", "reason": "replay rejected"}
+[LINK] established in 0.001s
+{"ok": false, "decision": "fail_safe", "reason": "unexpected key_version"}
+[LINK] established in 0.001s
+{"ok": false, "decision": "block", "reason": "pqc upgrade failed", "profile": "hybrid_light", "key_version": 1, "pqc": "failed"}
