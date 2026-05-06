@@ -1,0 +1,17 @@
+==================================== ERRORS ====================================
+____________ ERROR collecting tests/test_crypto_suite_reporting.py _____________
+ImportError while importing test module '/workspace/Reticulum/tests/test_crypto_suite_reporting.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/root/.pyenv/versions/3.12.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_crypto_suite_reporting.py:1: in <module>
+    from lab_local.run_lab import crypto_block
+lab_local/run_lab.py:3: in <module>
+    from netem import apply_netem,clear_netem,tc_available
+E   ModuleNotFoundError: No module named 'netem'
+=========================== short test summary info ============================
+ERROR tests/test_crypto_suite_reporting.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.77s
