@@ -1,5 +1,4 @@
 Reticulum Network Stack <img align="right" src="https://static.pepy.tech/personalized-badge/rns?period=month&units=international_system&left_color=grey&right_color=blue&left_text=Installs/month" style="padding-left:10px"/><a href="https://github.com/markqvist/Reticulum/actions/workflows/build.yml"><img align="right" src="https://github.com/markqvist/Reticulum/actions/workflows/build.yml/badge.svg"/></a>
-==========
 
 <p align="center"><img width="200" src="https://raw.githubusercontent.com/markqvist/Reticulum/master/docs/source/graphics/rns_logo_512.png"></p>
 
@@ -231,23 +230,78 @@ To simply install Reticulum and related utilities on your system, the easiest wa
 You can then start any program that uses Reticulum, or start Reticulum as a system service with
 [the rnsd utility](https://markqvist.github.io/Reticulum/manual/using.html#the-rnsd-utility).
 
+> **Made by SlaXx**
+
+## Estado del proyecto
+Este repositorio es una variante de Reticulum enfocada en **investigación y laboratorio** para seguridad adaptativa.
+
+- No está orientado todavía a producción.
+- Parte de la criptografía PQC puede estar en modo **SIMULATED / NOT CONCLUSIVE**.
+
+---
+
+## Resumen rápido de qué cambia frente al Reticulum normal
+
+En el Reticulum base, la seguridad criptográfica y el flujo de enlace son clásicos y uniformes.  
+En este fork se añade una capa de decisión adaptativa:
+
+1. **Perfiles criptográficos configurables**.
+2. **`security_tag` por mensaje** para ajustar política según criticidad.
+3. **Policy Engine** para decidir enviar, bloquear o exigir upgrade.
+4. **Upgrade PQC/híbrido dentro de Link** (sin romper de inicio el flujo clásico base).
+5. **Versionado de clave (`key_version`)** para cambios de clave coordinados.
+6. **Controles anti-downgrade y anti-replay** en la capa de control de seguridad.
+7. **Laboratorio local reproducible** con simulación de redes degradadas tipo LoRa.
+
+Documento comparativo detallado: [Diferencias con Reticulum original](docs/differences_from_original.md).
+
+---
+
+## Dónde están los cambios (mapa rápido)
+
+- Perfiles y selección: [`RNS/crypto_profiles.py`](RNS/crypto_profiles.py)
+- Política de decisión: [`RNS/security_policy.py`](RNS/security_policy.py)
+- Control de upgrade PQC: [`RNS/pqc_upgrade.py`](RNS/pqc_upgrade.py)
+- Integración en enlace: [`RNS/Link.py`](RNS/Link.py)
+- Laboratorio local: [`lab_local/`](lab_local)
+- Pruebas: [`tests/`](tests)
+- Documentación extendida: [`docs/`](docs)
+
+---
+
+## Cómo se aplica la mejora (flujo funcional)
+
+1. La aplicación marca cada envío con `security_tag`.
+2. `SecurityPolicyEngine` evalúa: perfil mínimo, perfil actual y capacidades remotas.
+3. Si el mensaje requiere más seguridad, el `Link` puede iniciar upgrade PQC/híbrido.
+4. Si el upgrade completa correctamente, se actualiza `key_version`.
+5. Si no cumple política (por ejemplo `MAX_SECURITY` sin perfil suficiente), se bloquea con motivo.
+
+Flujos y diagramas completos: [Arquitectura y cambios de seguridad adaptativa](docs/extended_security_adaptive_reticulum.md).
+
+---
+
+## Documentación técnica (meta-links internos)
+
+- [Arquitectura y cambios de seguridad adaptativa](docs/extended_security_adaptive_reticulum.md)
+- [Laboratorio local y pruebas extendidas](docs/local_lab_and_testing_extended.md)
+- [Perfiles criptográficos](docs/crypto_profiles.md)
+- [Security tags y Policy Engine](docs/security_tags_policy.md)
+- [Flujo de upgrade PQC en Link](docs/link_pqc_upgrade.md)
+- [Limitaciones conocidas](docs/limitations.md)
+- [Roadmap técnico](docs/roadmap.md)
+- [Índice documental](docs/architecture_index.md)
+
+---
+
+## Ejecución de laboratorio y pruebas
+
 ```bash
-pip install rns
-```
-
-If you are using an operating system that blocks normal user package installation via `pip`,
-you can return `pip` to normal behaviour by editing the `~/.config/pip/pip.conf` file,
-and adding the following directive in the `[global]` section:
-
-```text
-[global]
-break-system-packages = true
-```
-
-Alternatively, you can use the `pipx` tool to install Reticulum in an isolated environment:
-
-```bash
-pipx install rns
+python lab_local/run_lab.py
+python lab_local/run_lab.py --force-max-security
+python lab_local/run_lab.py --force-max-security --network-profile lora_failure
+python lab_local/run_lab.py --force-max-security --network-profile lora_extreme
+python -m pytest -q tests/
 ```
 
 When first started, Reticulum will create a default configuration file,
