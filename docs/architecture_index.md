@@ -8,3 +8,4 @@
 - `docs/testing_report.md`
 - `docs/limitations.md`
 - `docs/roadmap.md`
+- `docs/differences_from_original.md`
