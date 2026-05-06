@@ -3,7 +3,66 @@ Reticulum Network Stack <img align="right" src="https://static.pepy.tech/persona
 
 <p align="center"><img width="200" src="https://raw.githubusercontent.com/markqvist/Reticulum/master/docs/source/graphics/rns_logo_512.png"></p>
 
-*This repository is [a public mirror](./MIRROR.md). All development is happening elsewhere.*
+**Fork de trabajo adaptativo de Reticulum (laboratorio privado).**
+
+Este repositorio contiene cambios funcionales y de documentación sobre la base original de Reticulum para investigación de seguridad adaptativa/PQC.
+
+> Made by **SlaXx**.
+
+## Lab Extension Notice (This Fork)
+
+This fork documents and tests an **adaptive-security laboratory extension** for private/research Reticulum deployments.
+
+### What is included
+- Configurable crypto profiles (`classic`, `hybrid_light`, `hybrid_strong`, `pqc_experimental`)
+- Per-message `security_tag` policy (`STANDARD`, `PREFERRED_SECURE`, `MUST_DELIVER`, `MAX_SECURITY`)
+- Policy Engine decisions (allow/block/upgrade)
+- Link-level PQC upgrade workflow and key-version transition tracking
+- Anti-downgrade and replay controls in test scope
+- Local lab harness and LoRa-like simulation profiles
+
+### Important safety statement
+This extension is currently for **laboratory/research** use. Where PQC paths are simulated, results are **SIMULATED / NOT CONCLUSIVE** and must not be presented as cryptographic proof of post-quantum security.
+
+### Documentation map
+- Architecture: `docs/architecture.md`
+- Crypto profiles: `docs/crypto_profiles.md`
+- Security tags and policy: `docs/security_tags_policy.md`
+- Link PQC upgrade: `docs/link_pqc_upgrade.md`
+- Local lab usage: `docs/lab_local_usage.md`
+- Testing report: `docs/testing_report.md`
+- Limitations: `docs/limitations.md`
+- Roadmap: `docs/roadmap.md`
+
+### Quick commands
+```bash
+python lab_local/run_lab.py
+python lab_local/run_lab.py --force-max-security
+python lab_local/run_lab.py --force-max-security --network-profile lora_failure
+python lab_local/run_lab.py --force-max-security --network-profile lora_extreme
+```
+
+Latest lab outputs:
+- `lab_local/results/latest_report.md`
+- `lab_local/results/latest_report.json`
+
+
+## Documentación técnica extendida
+- [Arquitectura y cambios de seguridad adaptativa](docs/extended_security_adaptive_reticulum.md)
+- [Laboratorio local y pruebas extendidas](docs/local_lab_and_testing_extended.md)
+- [Limitaciones conocidas](docs/limitations.md)
+- [Roadmap técnico](docs/roadmap.md)
+
+
+### Cambios y diferencias con Reticulum original
+- Se añadieron perfiles criptográficos para políticas adaptativas: `classic`, `hybrid_light`, `hybrid_strong`, `pqc_experimental`.
+- Se añadió `security_tag` por mensaje: `STANDARD`, `PREFERRED_SECURE`, `MUST_DELIVER`, `MAX_SECURITY`.
+- Se añadió un `SecurityPolicyEngine` para decisiones allow/block/upgrade.
+- Se añadió flujo de upgrade PQC dentro de Link y versionado de clave (`key_version`).
+- Se añadió laboratorio local `lab_local/` con perfiles de red y reportes automáticos.
+- Se añadieron pruebas y documentación de límites: VALIDATED / SIMULATED / NOT CONCLUSIVE.
+
+Consulta detalle técnico en `docs/architecture.md` y `docs/limitations.md`.
 
 To understand the foundational philosophy and goals of this system, read the [Zen of Reticulum](Zen%20of%20Reticulum.md).
 
