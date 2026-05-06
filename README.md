@@ -57,6 +57,44 @@ Latest lab outputs:
 
 Consulta detalle técnico en `docs/architecture.md` y `docs/limitations.md`.
 
+## Lab Extension Notice (This Fork)
+
+This fork documents and tests an **adaptive-security laboratory extension** for private/research Reticulum deployments.
+
+### What is included
+- Configurable crypto profiles (`classic`, `hybrid_light`, `hybrid_strong`, `pqc_experimental`)
+- Per-message `security_tag` policy (`STANDARD`, `PREFERRED_SECURE`, `MUST_DELIVER`, `MAX_SECURITY`)
+- Policy Engine decisions (allow/block/upgrade)
+- Link-level PQC upgrade workflow and key-version transition tracking
+- Anti-downgrade and replay controls in test scope
+- Local lab harness and LoRa-like simulation profiles
+
+### Important safety statement
+This extension is currently for **laboratory/research** use. Where PQC paths are simulated, results are **SIMULATED / NOT CONCLUSIVE** and must not be presented as cryptographic proof of post-quantum security.
+
+### Documentation map
+- Architecture: `docs/architecture.md`
+- Crypto profiles: `docs/crypto_profiles.md`
+- Security tags and policy: `docs/security_tags_policy.md`
+- Link PQC upgrade: `docs/link_pqc_upgrade.md`
+- Local lab usage: `docs/lab_local_usage.md`
+- Testing report: `docs/testing_report.md`
+- Limitations: `docs/limitations.md`
+- Roadmap: `docs/roadmap.md`
+
+### Quick commands
+```bash
+python lab_local/run_lab.py
+python lab_local/run_lab.py --force-max-security
+python lab_local/run_lab.py --force-max-security --network-profile lora_failure
+python lab_local/run_lab.py --force-max-security --network-profile lora_extreme
+```
+
+Latest lab outputs:
+- `lab_local/results/latest_report.md`
+- `lab_local/results/latest_report.json`
+
+
 To understand the foundational philosophy and goals of this system, read the [Zen of Reticulum](Zen%20of%20Reticulum.md).
 
 Reticulum is the cryptography-based networking stack for building local and wide-area
