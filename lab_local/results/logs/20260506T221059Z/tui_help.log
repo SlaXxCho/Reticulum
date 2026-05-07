@@ -1,0 +1,6 @@
+usage: app.py [-h] [--debug] [--self-test]
+
+options:
+  -h, --help   show this help message and exit
+  --debug
+  --self-test

@@ -1,0 +1,103 @@
+{
+  "menu_validation": [
+    {
+      "Menu": "Node Security Policy",
+      "Exists": true,
+      "Opens": true,
+      "Data Valid": true,
+      "Safe Output": true,
+      "Result": "OK",
+      "Notes": "CLI fallback; some sections placeholders"
+    },
+    {
+      "Menu": "Crypto Profiles",
+      "Exists": true,
+      "Opens": true,
+      "Data Valid": true,
+      "Safe Output": true,
+      "Result": "OK",
+      "Notes": "CLI fallback; some sections placeholders"
+    },
+    {
+      "Menu": "Message Security Tags",
+      "Exists": true,
+      "Opens": true,
+      "Data Valid": false,
+      "Safe Output": true,
+      "Result": "PARTIAL",
+      "Notes": "CLI fallback; some sections placeholders"
+    },
+    {
+      "Menu": "Link / PQC Upgrade",
+      "Exists": true,
+      "Opens": true,
+      "Data Valid": false,
+      "Safe Output": true,
+      "Result": "PARTIAL",
+      "Notes": "CLI fallback; some sections placeholders"
+    },
+    {
+      "Menu": "Network Simulation Profiles",
+      "Exists": true,
+      "Opens": true,
+      "Data Valid": false,
+      "Safe Output": true,
+      "Result": "PARTIAL",
+      "Notes": "CLI fallback; some sections placeholders"
+    },
+    {
+      "Menu": "Local Lab Runner",
+      "Exists": true,
+      "Opens": true,
+      "Data Valid": true,
+      "Safe Output": true,
+      "Result": "OK",
+      "Notes": "CLI fallback; some sections placeholders"
+    },
+    {
+      "Menu": "Test Runner",
+      "Exists": true,
+      "Opens": true,
+      "Data Valid": true,
+      "Safe Output": true,
+      "Result": "OK",
+      "Notes": "CLI fallback; some sections placeholders"
+    },
+    {
+      "Menu": "Reports",
+      "Exists": true,
+      "Opens": true,
+      "Data Valid": true,
+      "Safe Output": true,
+      "Result": "OK",
+      "Notes": "CLI fallback; some sections placeholders"
+    },
+    {
+      "Menu": "Logs",
+      "Exists": true,
+      "Opens": true,
+      "Data Valid": true,
+      "Safe Output": true,
+      "Result": "OK",
+      "Notes": "CLI fallback; some sections placeholders"
+    },
+    {
+      "Menu": "System / Environment",
+      "Exists": true,
+      "Opens": true,
+      "Data Valid": true,
+      "Safe Output": true,
+      "Result": "OK",
+      "Notes": "CLI fallback; some sections placeholders"
+    },
+    {
+      "Menu": "Exit",
+      "Exists": true,
+      "Opens": true,
+      "Data Valid": false,
+      "Safe Output": true,
+      "Result": "OK",
+      "Notes": "CLI fallback; some sections placeholders"
+    }
+  ]
+}

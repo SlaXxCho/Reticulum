@@ -1,0 +1,12 @@
+# Lab V2 Report
+- suite: basic
+- force_max_security: False
+- network_profile: normal
+
+Scenario | Suite | Result | Negotiated | Notes
+---|---|---|---|---
+classic_standard | basic | OK | classic | SIMULATED / NOT CONCLUSIVE
+hybrid_light_upgrade | basic | OK | hybrid_light | SIMULATED / NOT CONCLUSIVE
+standard_message | basic | OK | hybrid_light | SIMULATED / NOT CONCLUSIVE
+preferred_secure_fallback | basic | OK | hybrid_light | SIMULATED / NOT CONCLUSIVE
+
