@@ -22,3 +22,13 @@ python lab_local/run_lab.py --force-max-security --network-profile lora_extreme
 
 ## Note
 Local simulation is useful for functional validation, but **not equivalent** to RF LoRa behavior.
+
+
+## Lab v2
+```bash
+python lab_local/run_lab_v2.py --suite basic
+python lab_local/run_lab_v2.py --suite security
+python lab_local/run_lab_v2.py --suite failure
+python lab_local/run_lab_v2.py --suite all --force-max-security --network-profile lora_failure
+```
+Reportes v2: `lab_local/results/latest_report_v2.md` y `.json`.

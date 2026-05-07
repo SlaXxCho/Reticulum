@@ -1,0 +1,12 @@
+# Lab V2 Report
+- suite: security
+- force_max_security: False
+- network_profile: normal
+
+Scenario | Suite | Result | Negotiated | Notes
+---|---|---|---|---
+max_security_success | security | OK | hybrid_light | SIMULATED / NOT CONCLUSIVE
+max_security_block_without_pqc | security | OK | hybrid_light | SIMULATED / NOT CONCLUSIVE
+anti_downgrade_block | security | OK | hybrid_light | SIMULATED / NOT CONCLUSIVE
+replay_policy_update_rejected | security | OK | hybrid_light | SIMULATED / NOT CONCLUSIVE
+key_desync_safe_failure | security | OK | hybrid_light | SIMULATED / NOT CONCLUSIVE

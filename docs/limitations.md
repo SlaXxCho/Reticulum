@@ -1,16 +1,17 @@
-# Limitations and Validation Boundaries
+# Limitaciones y riesgos
 
-- **PQC integration status**: may be simulated/mock in lab flows.
-  - Label: **SIMULATED / NOT CONCLUSIVE**
-- **Real PQC assurances**: not established unless ML-KEM/ML-DSA real implementations are integrated and audited.
-  - Label: **NOT CONCLUSIVE**
-- **Network emulation**: current environment reported no `tc/netem`; fallback simulation used.
-  - Label: **SIMULATED**
-- **LoRa RF validation**: no hardware RF tests in this environment.
-  - Label: **NOT CONCLUSIVE**
-- **Duty cycle, RF collisions, energy profile**: not measured.
-  - Label: **TODO**
-- **Fragmentation validation**: logical/software-level behavior validated; physical LoRa stack behavior pending.
-  - Label: **VALIDATED (logic) / NOT CONCLUSIVE (RF)**
-- **Production readiness**: not production-hardening complete.
-  - Label: **TODO**
+- PQC simulado/mock **no equivale** a seguridad post-cuántica real. (**SIMULATED / NOT CONCLUSIVE**)
+- LoRa simulado **no equivale** a LoRa físico en RF. (**SIMULATED / NOT CONCLUSIVE**)
+- Falta integrar y validar ML-KEM real. (**TODO**)
+- Falta integrar y validar ML-DSA real (si se mantiene identidad híbrida). (**TODO**)
+- Falta validar con `tc/netem` kernel-level real. (**TODO**)
+- Falta campaña con hardware LoRa real. (**TODO**)
+- Falta medir consumo energético, duty cycle y colisiones RF. (**TODO**)
+- Falta análisis DoS específico del flujo de upgrade. (**TODO**)
+- Falta auditoría criptográfica externa independiente. (**TODO**)
+
+## Etiquetas de estado
+- **VALIDATED**: evidencia funcional en pruebas.
+- **SIMULATED**: comportamiento emulado por harness.
+- **NOT CONCLUSIVE**: no permite afirmación criptográfica final.
+- **TODO**: pendiente técnico.

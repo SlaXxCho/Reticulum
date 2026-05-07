@@ -1,7 +1,7 @@
-import shlex
 import subprocess
 
 SAFE = {'python', 'pytest'}
+VALID_NET = {'normal','wifi_like','ethernet_like','lora_basic','lora_degraded','lora_failure','lora_extreme'}
 
 
 def build_lab_command(force_max=False, network_profile=None):
@@ -9,6 +9,21 @@ def build_lab_command(force_max=False, network_profile=None):
     if force_max:
         cmd.append('--force-max-security')
     if network_profile:
+        if network_profile not in VALID_NET:
+            raise ValueError('Invalid network profile')
+        cmd += ['--network-profile', network_profile]
+    return cmd
+
+
+def build_lab_v2_command(suite='all', force_max=False, network_profile=None):
+    if suite not in {'basic','security','failure','all'}:
+        raise ValueError('Invalid suite')
+    cmd = ['python','lab_local/run_lab_v2.py','--suite',suite]
+    if force_max:
+        cmd.append('--force-max-security')
+    if network_profile:
+        if network_profile not in VALID_NET:
+            raise ValueError('Invalid network profile')
         cmd += ['--network-profile', network_profile]
     return cmd
 
@@ -25,5 +40,7 @@ def predefined_test_commands():
 def run_command(cmd):
     if cmd[0] not in SAFE:
         raise ValueError('Unsafe command')
+    if any(x in ';|&' for token in cmd for x in token):
+        raise ValueError('Unsafe characters in command')
     p = subprocess.run(cmd, capture_output=True, text=True)
     return {'rc': p.returncode, 'stdout': p.stdout, 'stderr': p.stderr}

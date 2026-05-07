@@ -27,3 +27,9 @@ python -m pytest -q tests/test_crypto_profiles.py tests/test_security_policy.py 
 - **VALIDATED**: functional behavior observed in tests.
 - **SIMULATED**: behavior emulated by harness/mocks.
 - **NOT CONCLUSIVE**: cannot claim cryptographic proof-level assurance from this dataset.
+
+
+## Panel/TUI y Lab v2
+- Self-test TUI: `python -m rns_tui.app --self-test`
+- Lab v2: suites `basic`, `security`, `failure`, `all`
+- Estado PQC y red degradada: **SIMULATED / NOT CONCLUSIVE**.

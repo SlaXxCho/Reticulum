@@ -28,3 +28,10 @@ Se guarda en `lab_local/panel_config.json` con campos:
 - `min_profile`, `max_profile`, `default_profile`
 - `allow_downgrade`, `require_pqc`, `force_max_security`
 - `default_security_tag`, `network_profile`
+
+
+## Self-test
+```bash
+python -m rns_tui.app --self-test
+```
+Genera `lab_local/results/tui_self_test.md` y `.json`.
