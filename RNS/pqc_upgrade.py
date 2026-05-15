@@ -1,9 +1,11 @@
 import os
 import time
 import threading
+import hashlib
 
 import RNS
 from RNS.vendor import umsgpack
+from RNS.pqc_backend import encapsulate, PQCBackendUnavailable
 
 
 class PQCUpgradeManager:
@@ -31,10 +33,24 @@ class PQCUpgradeManager:
         })
         return self.CONTROL_PREFIX + payload
 
-    def build_kem_exchange(self, profile_name):
-        fake_ciphertext = os.urandom(64)
-        payload = umsgpack.packb({"t": "PQC_KEM", "profile": profile_name, "ct": fake_ciphertext, "n": self._nonce(), "ts": time.time()})
-        return self.CONTROL_PREFIX + payload
+    def build_kem_exchange(self, profile_name, receiver_public_key: bytes | None = None):
+        if profile_name not in ("pqc512", "pqc768"):
+            fake_ciphertext = os.urandom(64)
+            payload = umsgpack.packb({"t": "PQC_KEM", "profile": profile_name, "ct": fake_ciphertext, "n": self._nonce(), "ts": time.time(), "simulated": True})
+            return self.CONTROL_PREFIX + payload
+
+        if receiver_public_key is None:
+            raise PQCBackendUnavailable("ML-KEM backend not available")
+
+        alg = "ML-KEM-512" if profile_name == "pqc512" else "ML-KEM-768"
+        ct, ss = encapsulate(alg, receiver_public_key)
+        payload = umsgpack.packb({
+            "t": "PQC_KEM", "profile": profile_name, "kex_alg": alg,
+            "ct": ct,
+            "ct_sha256": hashlib.sha256(ct).hexdigest()[:16],
+            "n": self._nonce(), "ts": time.time(), "simulated": False
+        })
+        return self.CONTROL_PREFIX + payload, ss
 
     def parse_control(self, plaintext):
         if not plaintext.startswith(self.CONTROL_PREFIX):

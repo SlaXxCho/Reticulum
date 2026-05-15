@@ -1,0 +1,3 @@
+{"ts": "2026-05-15T10:24:30.465138+00:00", "run_id": "selftest_20260515T102430Z", "node": "receiver", "event": "session_ready", "profile": "classic", "result": "ok"}
+{"ts": "2026-05-15T10:24:30.465219+00:00", "run_id": "selftest_20260515T102430Z", "node": "receiver", "event": "session_ready", "profile": "pqc512", "result": "backend_unavailable"}
+{"ts": "2026-05-15T10:24:30.465235+00:00", "run_id": "selftest_20260515T102430Z", "node": "receiver", "event": "session_ready", "profile": "pqc768", "result": "backend_unavailable"}

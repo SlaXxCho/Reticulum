@@ -1,0 +1,31 @@
+{
+  "menu": [
+    "1. Ver estado de interfaces LoRa/serial",
+    "2. Seleccionar puerto LoRa",
+    "3. Seleccionar perfil",
+    "4. Ver backend PQC",
+    "5. Crear identidad de laboratorio",
+    "6. Iniciar nodo receptor",
+    "7. Iniciar nodo emisor",
+    "8. Enviar mensaje de prueba",
+    "9. Enviar archivo de prueba",
+    "10. Ejecutar laboratorio completo",
+    "11. Ver logs en vivo",
+    "12. Exportar resultados",
+    "13. Limpiar estado",
+    "14. Salir"
+  ],
+  "backend": {
+    "backend": "openssl-cli",
+    "openssl": "OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)",
+    "supports": {
+      "ML-KEM-512": false,
+      "ML-KEM-768": false
+    }
+  },
+  "profiles": [
+    "classic",
+    "pqc512",
+    "pqc768"
+  ]
+}

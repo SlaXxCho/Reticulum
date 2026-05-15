@@ -8,11 +8,11 @@ class SecurityPolicyEngine:
     def _required_profile_for_tag(self, security_tag):
         tag = security_tag if isinstance(security_tag, SecurityTag) else SecurityTag(security_tag)
         if tag == SecurityTag.MAX_SECURITY:
-            return "hybrid_strong"
+            return "pqc768"
         if tag == SecurityTag.MUST_DELIVER:
             return self.profile_manager.minimum_profile
         if tag == SecurityTag.PREFERRED_SECURE:
-            return "hybrid_light"
+            return "pqc512"
         return "classic"
 
     def evaluate(self, security_tag, remote_capabilities, current_profile, medium=Medium.UNKNOWN):

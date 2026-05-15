@@ -136,3 +136,15 @@ Resumen:
 
 - Self-test panel: `python -m rns_tui.app --self-test`
 - Lab v2: `python lab_local/run_lab_v2.py --suite all --force-max-security --network-profile lora_failure`
+
+
+## PQC real (backend)
+- El backend principal es OpenSSL CLI en `RNS/pqc_backend.py`.
+- Perfiles reales de sesión: `pqc512` (ML-KEM-512) y `pqc768` (ML-KEM-768).
+- Si el backend no está disponible, los perfiles PQC fallan con error explícito: `ML-KEM backend not available`.
+- `MAX_SECURITY` debe fallar cerrado si la política requiere PQC y no hay backend.
+
+Nuevos docs:
+- [PQC Reticulum LoRa (ES)](docs/pqc_reticulum_lora_es.md)
+- [Labs Reticulum PQC (ES)](docs/labs_reticulum_pqc_es.md)
+- [Glosario PQC Reticulum (ES)](docs/glosario_pqc_reticulum_es.md)
