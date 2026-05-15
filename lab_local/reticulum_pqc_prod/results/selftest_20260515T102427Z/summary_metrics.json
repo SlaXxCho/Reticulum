@@ -1,0 +1,30 @@
+{
+  "run_id": "selftest_20260515T102427Z",
+  "role": "receiver",
+  "port": "/dev/null",
+  "backend": {
+    "backend": "openssl-cli",
+    "openssl": "OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)",
+    "supports": {
+      "ML-KEM-512": false,
+      "ML-KEM-768": false
+    }
+  },
+  "results": [
+    {
+      "profile": "classic",
+      "result": "ok",
+      "simulated": false
+    },
+    {
+      "profile": "pqc512",
+      "result": "backend_unavailable",
+      "simulated": false
+    },
+    {
+      "profile": "pqc768",
+      "result": "backend_unavailable",
+      "simulated": false
+    }
+  ]
+}

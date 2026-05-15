@@ -14,3 +14,6 @@ tests/rnsconfig/logfile*
 *.data
 *.result
 .buildinfo.bak
+
+# Generated benchmark bundles
+lab_local/reticulum_pqc_prod/results/*.tar.gz
