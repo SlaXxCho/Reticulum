@@ -1,0 +1,478 @@
+{
+  "timestamp_utc": "20260505T165316Z",
+  "commit": "6bc57e530585741d980f3d8e1d81665f7692c713",
+  "python": "3.12.12 (main, Jan 12 2026, 17:43:59) [GCC 13.3.0]",
+  "platform": "Linux-6.12.47-x86_64-with-glibc2.39",
+  "tc_available": false,
+  "used_fallback": true,
+  "suite": "maximum_security_failure_suite",
+  "force_max_security": true,
+  "network_profile": "lora_failure",
+  "scenarios": [
+    {
+      "scenario_name": "classic_standard",
+      "expected_result": "block",
+      "actual_result": "FAIL",
+      "duration_ms": 254,
+      "network_profile": "lora_failure",
+      "mtu": 96,
+      "latency_ms": 2000,
+      "loss_percent": 30,
+      "bandwidth_kbit": 2,
+      "security_tag": "MAX_SECURITY",
+      "profile_requested": "hybrid_light",
+      "profile_negotiated": "classic",
+      "min_profile": "hybrid_light",
+      "allow_downgrade": false,
+      "pqc_required": true,
+      "pqc_upgrade_attempted": true,
+      "pqc_upgrade_success": false,
+      "key_version_before": 1,
+      "key_version_after": 1,
+      "key_switch_confirmed": false,
+      "failure_injected": false,
+      "failure_point": null,
+      "blocked_reason": null,
+      "fail_safe": false,
+      "crypto_suite_verified": {
+        "identity": {
+          "algorithm": "Ed25519",
+          "public_key_size": 32,
+          "signature_algorithm": "Ed25519",
+          "signature_size": 64,
+          "fingerprint_truncated": "deadbeefcafebabe",
+          "verified": true
+        },
+        "key_exchange_classic": {
+          "algorithm": "X25519",
+          "public_key_size": 32,
+          "shared_secret_derived": true,
+          "verified": true
+        },
+        "key_exchange_pqc": {
+          "algorithm": "ML-KEM-512",
+          "public_key_size": 800,
+          "ciphertext_size": 768,
+          "real_or_mock": "SIMULATED",
+          "verified": false
+        },
+        "kdf": {
+          "algorithm": "HKDF",
+          "salt_present": true,
+          "transcript_hash_truncated": "a1b2c3d4e5f6a7b8",
+          "derived_key_version": 1,
+          "verified": true
+        },
+        "symmetric_crypto": {
+          "algorithm": "AES-256",
+          "key_size": 32,
+          "mode": "CBC",
+          "auth_algorithm": "HMAC-SHA256",
+          "verified": true
+        },
+        "anti_downgrade": {
+          "capabilities_bound": true,
+          "downgrade_detected": true,
+          "downgrade_blocked": true
+        },
+        "replay_protection": {
+          "nonce_present": true,
+          "counter_present": false,
+          "replay_detected": false,
+          "replay_blocked": true
+        }
+      },
+      "stdout": "[LINK] established in 0.009s\n{\"ok\": true, \"decision\": \"allow\", \"profile\": \"classic\", \"key_version\": 1}",
+      "stderr": ""
+    },
+    {
+      "scenario_name": "hybrid_light_upgrade",
+      "expected_result": "upgrade",
+      "actual_result": "OK",
+      "duration_ms": 328,
+      "network_profile": "lora_failure",
+      "mtu": 96,
+      "latency_ms": 2000,
+      "loss_percent": 30,
+      "bandwidth_kbit": 2,
+      "security_tag": "MAX_SECURITY",
+      "profile_requested": "hybrid_light",
+      "profile_negotiated": "hybrid_light",
+      "min_profile": "hybrid_light",
+      "allow_downgrade": false,
+      "pqc_required": true,
+      "pqc_upgrade_attempted": true,
+      "pqc_upgrade_success": true,
+      "key_version_before": 1,
+      "key_version_after": 2,
+      "key_switch_confirmed": true,
+      "failure_injected": false,
+      "failure_point": null,
+      "blocked_reason": null,
+      "fail_safe": false,
+      "crypto_suite_verified": {
+        "identity": {
+          "algorithm": "Ed25519",
+          "public_key_size": 32,
+          "signature_algorithm": "Ed25519",
+          "signature_size": 64,
+          "fingerprint_truncated": "deadbeefcafebabe",
+          "verified": true
+        },
+        "key_exchange_classic": {
+          "algorithm": "X25519",
+          "public_key_size": 32,
+          "shared_secret_derived": true,
+          "verified": true
+        },
+        "key_exchange_pqc": {
+          "algorithm": "ML-KEM-512",
+          "public_key_size": 800,
+          "ciphertext_size": 768,
+          "real_or_mock": "SIMULATED",
+          "verified": true
+        },
+        "kdf": {
+          "algorithm": "HKDF",
+          "salt_present": true,
+          "transcript_hash_truncated": "a1b2c3d4e5f6a7b8",
+          "derived_key_version": 2,
+          "verified": true
+        },
+        "symmetric_crypto": {
+          "algorithm": "AES-256",
+          "key_size": 32,
+          "mode": "CBC",
+          "auth_algorithm": "HMAC-SHA256",
+          "verified": true
+        },
+        "anti_downgrade": {
+          "capabilities_bound": true,
+          "downgrade_detected": false,
+          "downgrade_blocked": false
+        },
+        "replay_protection": {
+          "nonce_present": true,
+          "counter_present": false,
+          "replay_detected": false,
+          "replay_blocked": true
+        }
+      },
+      "stdout": "[LINK] established in 0.002s\n{\"ok\": true, \"decision\": \"upgrade\", \"profile\": \"hybrid_light\", \"key_version\": 2, \"pqc\": \"completed\"}",
+      "stderr": ""
+    },
+    {
+      "scenario_name": "max_security_block_without_pqc",
+      "expected_result": "block",
+      "actual_result": "OK",
+      "duration_ms": 335,
+      "network_profile": "lora_failure",
+      "mtu": 96,
+      "latency_ms": 2000,
+      "loss_percent": 30,
+      "bandwidth_kbit": 2,
+      "security_tag": "MAX_SECURITY",
+      "profile_requested": "hybrid_light",
+      "profile_negotiated": "n/a",
+      "min_profile": "hybrid_light",
+      "allow_downgrade": false,
+      "pqc_required": true,
+      "pqc_upgrade_attempted": true,
+      "pqc_upgrade_success": false,
+      "key_version_before": 1,
+      "key_version_after": 1,
+      "key_switch_confirmed": false,
+      "failure_injected": true,
+      "failure_point": "max_security_block",
+      "blocked_reason": "required profile not available",
+      "fail_safe": true,
+      "crypto_suite_verified": {
+        "identity": {
+          "algorithm": "Ed25519",
+          "public_key_size": 32,
+          "signature_algorithm": "Ed25519",
+          "signature_size": 64,
+          "fingerprint_truncated": "deadbeefcafebabe",
+          "verified": true
+        },
+        "key_exchange_classic": {
+          "algorithm": "X25519",
+          "public_key_size": 32,
+          "shared_secret_derived": true,
+          "verified": true
+        },
+        "key_exchange_pqc": {
+          "algorithm": "ML-KEM-512",
+          "public_key_size": 800,
+          "ciphertext_size": 768,
+          "real_or_mock": "SIMULATED",
+          "verified": false
+        },
+        "kdf": {
+          "algorithm": "HKDF",
+          "salt_present": true,
+          "transcript_hash_truncated": "a1b2c3d4e5f6a7b8",
+          "derived_key_version": 1,
+          "verified": true
+        },
+        "symmetric_crypto": {
+          "algorithm": "AES-256",
+          "key_size": 32,
+          "mode": "CBC",
+          "auth_algorithm": "HMAC-SHA256",
+          "verified": true
+        },
+        "anti_downgrade": {
+          "capabilities_bound": true,
+          "downgrade_detected": false,
+          "downgrade_blocked": false
+        },
+        "replay_protection": {
+          "nonce_present": true,
+          "counter_present": false,
+          "replay_detected": false,
+          "replay_blocked": true
+        }
+      },
+      "stdout": "[LINK] established in 0.002s\n{\"ok\": false, \"decision\": \"block\", \"reason\": \"required profile not available\"}",
+      "stderr": ""
+    },
+    {
+      "scenario_name": "replay_policy_update_rejected",
+      "expected_result": "reject",
+      "actual_result": "OK",
+      "duration_ms": 375,
+      "network_profile": "lora_failure",
+      "mtu": 96,
+      "latency_ms": 2000,
+      "loss_percent": 30,
+      "bandwidth_kbit": 2,
+      "security_tag": "MAX_SECURITY",
+      "profile_requested": "hybrid_light",
+      "profile_negotiated": "n/a",
+      "min_profile": "hybrid_light",
+      "allow_downgrade": false,
+      "pqc_required": true,
+      "pqc_upgrade_attempted": true,
+      "pqc_upgrade_success": false,
+      "key_version_before": 1,
+      "key_version_after": 1,
+      "key_switch_confirmed": false,
+      "failure_injected": true,
+      "failure_point": "replay",
+      "blocked_reason": "replay rejected",
+      "fail_safe": true,
+      "crypto_suite_verified": {
+        "identity": {
+          "algorithm": "Ed25519",
+          "public_key_size": 32,
+          "signature_algorithm": "Ed25519",
+          "signature_size": 64,
+          "fingerprint_truncated": "deadbeefcafebabe",
+          "verified": true
+        },
+        "key_exchange_classic": {
+          "algorithm": "X25519",
+          "public_key_size": 32,
+          "shared_secret_derived": true,
+          "verified": true
+        },
+        "key_exchange_pqc": {
+          "algorithm": "ML-KEM-512",
+          "public_key_size": 800,
+          "ciphertext_size": 768,
+          "real_or_mock": "SIMULATED",
+          "verified": false
+        },
+        "kdf": {
+          "algorithm": "HKDF",
+          "salt_present": true,
+          "transcript_hash_truncated": "a1b2c3d4e5f6a7b8",
+          "derived_key_version": 1,
+          "verified": true
+        },
+        "symmetric_crypto": {
+          "algorithm": "AES-256",
+          "key_size": 32,
+          "mode": "CBC",
+          "auth_algorithm": "HMAC-SHA256",
+          "verified": true
+        },
+        "anti_downgrade": {
+          "capabilities_bound": true,
+          "downgrade_detected": false,
+          "downgrade_blocked": false
+        },
+        "replay_protection": {
+          "nonce_present": true,
+          "counter_present": false,
+          "replay_detected": false,
+          "replay_blocked": true
+        }
+      },
+      "stdout": "[LINK] established in 0.002s\n{\"ok\": false, \"decision\": \"reject\", \"reason\": \"replay rejected\"}",
+      "stderr": ""
+    },
+    {
+      "scenario_name": "key_desync_safe_failure",
+      "expected_result": "fail_safe",
+      "actual_result": "OK",
+      "duration_ms": 222,
+      "network_profile": "lora_failure",
+      "mtu": 96,
+      "latency_ms": 2000,
+      "loss_percent": 30,
+      "bandwidth_kbit": 2,
+      "security_tag": "MAX_SECURITY",
+      "profile_requested": "hybrid_light",
+      "profile_negotiated": "n/a",
+      "min_profile": "hybrid_light",
+      "allow_downgrade": false,
+      "pqc_required": true,
+      "pqc_upgrade_attempted": true,
+      "pqc_upgrade_success": false,
+      "key_version_before": 1,
+      "key_version_after": 1,
+      "key_switch_confirmed": false,
+      "failure_injected": true,
+      "failure_point": "key_desync",
+      "blocked_reason": "unexpected key_version",
+      "fail_safe": true,
+      "crypto_suite_verified": {
+        "identity": {
+          "algorithm": "Ed25519",
+          "public_key_size": 32,
+          "signature_algorithm": "Ed25519",
+          "signature_size": 64,
+          "fingerprint_truncated": "deadbeefcafebabe",
+          "verified": true
+        },
+        "key_exchange_classic": {
+          "algorithm": "X25519",
+          "public_key_size": 32,
+          "shared_secret_derived": true,
+          "verified": true
+        },
+        "key_exchange_pqc": {
+          "algorithm": "ML-KEM-512",
+          "public_key_size": 800,
+          "ciphertext_size": 768,
+          "real_or_mock": "SIMULATED",
+          "verified": false
+        },
+        "kdf": {
+          "algorithm": "HKDF",
+          "salt_present": true,
+          "transcript_hash_truncated": "a1b2c3d4e5f6a7b8",
+          "derived_key_version": 1,
+          "verified": true
+        },
+        "symmetric_crypto": {
+          "algorithm": "AES-256",
+          "key_size": 32,
+          "mode": "CBC",
+          "auth_algorithm": "HMAC-SHA256",
+          "verified": true
+        },
+        "anti_downgrade": {
+          "capabilities_bound": true,
+          "downgrade_detected": false,
+          "downgrade_blocked": false
+        },
+        "replay_protection": {
+          "nonce_present": true,
+          "counter_present": false,
+          "replay_detected": false,
+          "replay_blocked": true
+        }
+      },
+      "stdout": "[LINK] established in 0.002s\n{\"ok\": false, \"decision\": \"fail_safe\", \"reason\": \"unexpected key_version\"}",
+      "stderr": ""
+    },
+    {
+      "scenario_name": "false_positive_guard_forced_pqc_failure",
+      "expected_result": "block",
+      "actual_result": "OK",
+      "duration_ms": 306,
+      "network_profile": "lora_failure",
+      "mtu": 96,
+      "latency_ms": 2000,
+      "loss_percent": 30,
+      "bandwidth_kbit": 2,
+      "security_tag": "MAX_SECURITY",
+      "profile_requested": "hybrid_light",
+      "profile_negotiated": "hybrid_light",
+      "min_profile": "hybrid_light",
+      "allow_downgrade": false,
+      "pqc_required": true,
+      "pqc_upgrade_attempted": true,
+      "pqc_upgrade_success": false,
+      "key_version_before": 1,
+      "key_version_after": 1,
+      "key_switch_confirmed": false,
+      "failure_injected": true,
+      "failure_point": "pqc_forced_fail",
+      "blocked_reason": "pqc upgrade failed",
+      "fail_safe": true,
+      "crypto_suite_verified": {
+        "identity": {
+          "algorithm": "Ed25519",
+          "public_key_size": 32,
+          "signature_algorithm": "Ed25519",
+          "signature_size": 64,
+          "fingerprint_truncated": "deadbeefcafebabe",
+          "verified": true
+        },
+        "key_exchange_classic": {
+          "algorithm": "X25519",
+          "public_key_size": 32,
+          "shared_secret_derived": true,
+          "verified": true
+        },
+        "key_exchange_pqc": {
+          "algorithm": "ML-KEM-512",
+          "public_key_size": 800,
+          "ciphertext_size": 768,
+          "real_or_mock": "SIMULATED",
+          "verified": false
+        },
+        "kdf": {
+          "algorithm": "HKDF",
+          "salt_present": true,
+          "transcript_hash_truncated": "a1b2c3d4e5f6a7b8",
+          "derived_key_version": 1,
+          "verified": true
+        },
+        "symmetric_crypto": {
+          "algorithm": "AES-256",
+          "key_size": 32,
+          "mode": "CBC",
+          "auth_algorithm": "HMAC-SHA256",
+          "verified": true
+        },
+        "anti_downgrade": {
+          "capabilities_bound": true,
+          "downgrade_detected": false,
+          "downgrade_blocked": false
+        },
+        "replay_protection": {
+          "nonce_present": true,
+          "counter_present": false,
+          "replay_detected": false,
+          "replay_blocked": true
+        }
+      },
+      "stdout": "[LINK] established in 0.001s\n{\"ok\": false, \"decision\": \"block\", \"reason\": \"pqc upgrade failed\", \"profile\": \"hybrid_light\", \"key_version\": 1, \"pqc\": \"failed\"}",
+      "stderr": ""
+    }
+  ],
+  "pytest": {
+    "rc": 0,
+    "stdout": ".......                                                                  [100%]\n7 passed in 0.22s"
+  },
+  "totals": {
+    "total_tests": 6,
+    "passed": 5,
+    "failed": 1
+  }
+}
