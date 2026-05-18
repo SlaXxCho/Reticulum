@@ -1,22 +1,45 @@
-# Glosario PQC Reticulum (ES)
+# Glosario ampliado PQC Reticulum (ES)
 
-- sesión: contexto criptográfico activo entre nodos.
-- KEX: intercambio de claves.
-- KEM: mecanismo de encapsulación de claves.
-- ML-KEM: KEM basado en retículas modulares.
-- X25519: ECDH clásico de curva elíptica.
-- HKDF: función de derivación de claves basada en HMAC.
-- shared_secret: secreto compartido resultante del KEX/KEM.
-- session_key: clave simétrica derivada para cifrar contenido.
-- AES-256-GCM: cifrado autenticado simétrico.
-- nonce: valor único por cifrado para GCM.
-- AAD: datos autenticados no cifrados.
-- ciphertext: datos cifrados.
-- encapsulation/decapsulation: operaciones KEM.
-- key_epoch: versión de clave de sesión.
-- replay: repetición maliciosa de mensajes.
-- tamper: alteración de datos en tránsito.
-- TOFU/pinning: validación de huella de clave.
-- throughput: rendimiento efectivo.
-- overhead: bytes/tiempo extra de seguridad.
-- LoRa SF/BW/CR: parámetros de modulación y codificación LoRa.
+- **sesión**: contexto criptográfico temporal entre emisor y receptor.
+- **intercambio de sesión**: proceso de negociación para obtener secreto compartido.
+- **KEX**: Key Exchange.
+- **KEM**: Key Encapsulation Mechanism.
+- **ML-KEM**: KEM basado en retículas modulares.
+- **ML-KEM-512 / 768**: niveles de parámetro con distinto tamaño/coste.
+- **X25519**: ECDH clásico usado en modo baseline.
+- **HKDF**: HMAC-based Key Derivation Function.
+- **derivación**: transformación de `shared_secret` en `session_key`.
+- **shared_secret**: secreto compartido tras KEX/KEM.
+- **session_key**: clave simétrica de sesión.
+- **AES-256-GCM**: cifrado autenticado AEAD.
+- **nonce**: valor único por cifrado GCM.
+- **tag GCM**: autenticación criptográfica de GCM.
+- **AAD**: Additional Authenticated Data.
+- **ciphertext**: datos cifrados.
+- **ciphertext KEM**: encapsulado enviado en KEM.
+- **encapsulation/decapsulation**: operaciones de KEM.
+- **session_setup**: mensaje/proceso de preparación de sesión.
+- **session_id**: identificador único de sesión.
+- **key_epoch**: versión de clave.
+- **message_id**: id por mensaje para anti-replay.
+- **anti-replay**: evita aceptación de mensajes repetidos.
+- **tamper**: alteración de datos.
+- **downgrade / anti-downgrade**: forzar perfil más débil / bloqueo de ello.
+- **TOFU**: Trust On First Use.
+- **pinning**: fijación de huella/clave conocida.
+- **fingerprint**: huella resumida de clave.
+- **SHA-256**: hash criptográfico.
+- **HMAC**: hash autenticado con clave.
+- **salt/info**: parámetros de contexto en HKDF.
+- **AEAD**: cifrado autenticado con datos asociados.
+- **LoRa**: capa física de largo alcance y bajo bitrate.
+- **chunk**: fragmento de payload en transporte.
+- **ACK/STATUS**: acuse/estado de recepción.
+- **reintentos**: retransmisiones por fallos temporales.
+- **throughput**: tasa efectiva de bits útiles.
+- **overhead**: bytes/tiempo extra no útiles del payload.
+- **baudrate**: velocidad de símbolo/serial según contexto.
+- **RSSI/SNR**: indicadores de señal/ruido en radio.
+- **SF/BW/CR**: spreading factor / bandwidth / coding rate en LoRa.
+- **MAX_SECURITY**: etiqueta de política que exige el nivel más alto y fail-closed.
+- **backend PQC**: implementación concreta de ML-KEM (p.ej. OpenSSL CLI).

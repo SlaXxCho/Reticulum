@@ -148,3 +148,25 @@ Nuevos docs:
 - [PQC Reticulum LoRa (ES)](docs/pqc_reticulum_lora_es.md)
 - [Labs Reticulum PQC (ES)](docs/labs_reticulum_pqc_es.md)
 - [Glosario PQC Reticulum (ES)](docs/glosario_pqc_reticulum_es.md)
+
+
+## Resultados medidos (resumen)
+
+Sesión (ejecución real de referencia):
+- standard: 61.532 s
+- pqc512: 118.055 s (+56.523 s vs standard)
+- pqc768: 122.056 s (+60.524 s vs standard)
+
+Payloads:
+- El tamaño cifrado y coste por mensaje son prácticamente iguales entre modos tras establecer sesión.
+- La diferencia de coste está en el establecimiento inicial, no en cada payload.
+
+Importante:
+- Una anomalía observada mostró pública ML-KEM-512 más lenta que ML-KEM-768 en una corrida concreta por variabilidad LoRa/ACK/STATUS.
+- No debe interpretarse como propiedad intrínseca del algoritmo.
+
+Documentación completa de resultados:
+- [Resultados LoRa PQC Reticulum (ES)](docs/resultados_lora_pqc_reticulum_es.md)
+- [Decisión de funcionamiento](docs/decision_funcionamiento_reticulum_pqc_lora_es.md)
+- [Laboratorios en español](docs/laboratorios_reticulum_pqc_lora_es.md)
+- [Arquitectura de seguridad PQC](docs/arquitectura_seguridad_reticulum_pqc_es.md)
